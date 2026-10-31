@@ -1,0 +1,32 @@
+# Vertices are numbered from 0 to n-1.
+n = int(input("Number of vertices: "))
+m = int(input("Number of edges: "))
+edges = []
+print("Enter each edge as: vertex1 vertex2 weight")
+for i in range(m):
+    u, v, w = map(int, input().split())
+    edges.append((w, u, v))
+edges.sort()  # Sort edges by weight
+parent = list(range(n))
+def find(x):
+    while parent[x] != x:
+        parent[x] = parent[parent[x]]
+        x = parent[x]
+    return x
+mst = []
+total = 0
+for w, u, v in edges:
+    ru, rv = find(u), find(v)
+    if ru != rv:
+        parent[ru] = rv
+        mst.append((u, v, w))
+        total += w
+        if len(mst) == n - 1:
+            break
+if len(mst) != n - 1:
+    print("Graph is disconnected; no spanning tree exists.")
+else:
+    print("MST edges:")
+    for u, v, w in mst:
+        print(u, "-", v, "weight", w)
+    print("Total weight:", total)

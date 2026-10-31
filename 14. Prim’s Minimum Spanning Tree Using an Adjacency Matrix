@@ -1,0 +1,30 @@
+# Use 0 where there is no edge; enter positive weights for edges.
+n = int(input("Number of vertices: "))
+graph = []
+print("Enter the adjacency matrix row by row:")
+for i in range(n):
+    graph.append(list(map(int, input().split())))
+selected = [False] * n
+selected[0] = True
+edge_count = 0
+total = 0
+print("MST edges:")
+while edge_count < n - 1:
+    minimum = float("inf")
+    u = v = -1
+    for i in range(n):
+        if selected[i]:
+            for j in range(n):
+                if not selected[j] and graph[i][j] > 0:
+                    if graph[i][j] < minimum:
+                        minimum = graph[i][j]
+                        u, v = i, j
+    if v == -1:
+        print("Graph is disconnected; no spanning tree exists.")
+        break
+    print(u, "-", v, "weight", minimum)
+    selected[v] = True
+    total += minimum
+    edge_count += 1
+if edge_count == n - 1:
+    print("Total weight:", total)

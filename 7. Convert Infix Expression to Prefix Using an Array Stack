@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+char st[200];
+int top = -1;
+void push(char c) { st[++top] = c; }
+char pop() { return st[top--]; }
+char peek() { return st[top]; }
+int prec(char c) {
+    if (c == '^') return 3;
+    if (c == '*' || c == '/') return 2;
+    if (c == '+' || c == '-') return 1;
+    return 0;
+}
+int main() {
+    string in, rev = "", post = "", pre;
+    cout << "Enter infix expression (single-letter/digit operands): ";
+    cin >> in;
+    for (int i = (int)in.length() - 1; i >= 0; i--) {
+        if (in[i] == '(') rev += ')';
+        else if (in[i] == ')') rev += '(';
+        else rev += in[i];
+    }
+    for (int i = 0; i < (int)rev.length(); i++) {
+        char c = rev[i];
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+            (c >= '0' && c <= '9')) post += c;
+        else if (c == '(') push(c);
+        else if (c == ')') {
+            while (top != -1 && peek() != '(') post += pop();
+            if (top != -1) pop();
+        } else {
+            while (top != -1 && peek() != '(' &&
+                   (prec(peek()) > prec(c) ||
+                   (prec(peek()) == prec(c) && c == '^')))
+                post += pop();
+            push(c);
+        }
+    }
+    while (top != -1) post += pop();
+    pre = post;
+    reverse(pre.begin(), pre.end());
+    cout << "Prefix: " << pre << "\n";
+    return 0;
+}

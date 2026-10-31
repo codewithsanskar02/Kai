@@ -1,0 +1,29 @@
+class Node:
+    def __init__(self, value):
+        self.data = value
+        self.left = None
+        self.right = None
+def insert(root, value):
+    if root is None:
+        return Node(value)
+    if value < root.data:
+        root.left = insert(root.left, value)
+    elif value > root.data:
+        root.right = insert(root.right, value)
+    return root
+def depth(root):
+    if root is None:
+        return 0
+    return 1 + max(depth(root.left), depth(root.right))
+def show_leaves(root):
+    if root is None:
+        return
+    if root.left is None and root.right is None:
+        print(root.data, end=" ")
+    show_leaves(root.left)
+    show_leaves(root.right)
+root = None
+for x in map(int, input("Enter BST values: ").split()):
+    root = insert(root, x)
+print("Depth (number of levels):", depth(root))
+print("Leaf nodes:", end=" "); show_leaves(root); print()

@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+int main() {
+    int n, id[100], key;
+    cout << "Enter number of IDs (1-100): ";
+    cin >> n;
+    if (n < 1 || n > 100) return 0;
+    cout << "Enter student IDs: ";
+    for (int i = 0; i < n; i++) cin >> id[i];
+    // Bubble sort in ascending order
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - i - 1; j++)
+            if (id[j] > id[j + 1]) {
+                int temp = id[j];
+                id[j] = id[j + 1];
+                id[j + 1] = temp;
+            }
+    cout << "Sorted IDs: ";
+    for (int i = 0; i < n; i++) cout << id[i] << " ";
+    cout << "\nEnter ID to search: ";
+    cin >> key;
+    int low = 0, high = n - 1, pos = -1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (id[mid] == key) { pos = mid; break; }
+        if (id[mid] < key) low = mid + 1;
+        else high = mid - 1;
+    }
+    if (pos == -1) cout << "ID not found.\n";
+    else cout << "ID found at sorted index " << pos << "\n";
+    return 0;
+}

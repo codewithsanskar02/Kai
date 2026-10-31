@@ -1,0 +1,28 @@
+class Node:
+    def __init__(self, value):
+        self.data = value
+        self.left = None
+        self.right = None
+def insert(root, value):
+    if root is None:
+        return Node(value)
+    if value < root.data:
+        root.left = insert(root.left, value)
+    elif value > root.data:
+        root.right = insert(root.right, value)
+    return root
+def search(root, key):
+    if root is None or root.data == key:
+        return root
+    if key < root.data:
+        return search(root.left, key)
+    return search(root.right, key)
+root = None
+values = list(map(int, input("Enter BST values: ").split()))
+for value in values:
+    root = insert(root, value)
+key = int(input("Enter key to search: "))
+if search(root, key):
+    print("Key is present in the BST.")
+else:
+    print("Key is not present in the BST.")

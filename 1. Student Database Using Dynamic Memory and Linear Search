@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+using namespace std;
+struct Student {
+    int id;
+    string name;
+    float cgpa;
+};
+int main() {
+    int n;
+    cout << "Enter number of students: ";
+    cin >> n;
+    if (n <= 0) {
+        cout << "Invalid number of students.\n";
+        return 0;
+    }
+    Student *s = new Student[n];
+    for (int i = 0; i < n; i++) {
+        cout << "Enter ID, name and CGPA: ";
+        cin >> s[i].id >> s[i].name >> s[i].cgpa;
+    }
+    int key, found = -1;
+    cout << "Enter ID to search: ";
+    cin >> key;
+    for (int i = 0; i < n; i++) {
+        if (s[i].id == key) {
+            found = i;
+            break;
+        }
+    }
+    if (found == -1)
+        cout << "Student not found.\n";
+    else
+        cout << s[found].id << " " << s[found].name
+             << " " << s[found].cgpa << "\n";
+    delete[] s;
+    return 0;
+}

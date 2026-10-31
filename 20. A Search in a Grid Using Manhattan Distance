@@ -1,0 +1,48 @@
+# 0 means free cell and 1 means obstacle.
+maze = [
+    [0, 0, 0, 0],
+    [1, 1, 0, 1],
+    [0, 0, 0, 0],
+    [0, 1, 1, 0]
+]
+start = (0, 0)
+goal = (3, 3)
+rows, cols = len(maze), len(maze[0])
+def heuristic(cell):
+    return abs(cell[0] - goal[0]) + abs(cell[1] - goal[1])
+open_list = [start]
+parent = {start: None}
+g_cost = {start: 0}
+closed = set()
+while open_list:
+    # Select the open cell with the smallest f = g + h
+    current = min(open_list, key=lambda cell: g_cost[cell] + heuristic(cell))
+    open_list.remove(current)
+    if current == goal:
+        break
+    closed.add(current)
+    r, c = current
+    for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+        nr, nc = r + dr, c + dc
+        neighbor = (nr, nc)
+        if not (0 <= nr < rows and 0 <= nc < cols):
+            continue
+        if maze[nr][nc] == 1 or neighbor in closed:
+            continue
+        new_cost = g_cost[current] + 1
+        if neighbor not in g_cost or new_cost < g_cost[neighbor]:
+            g_cost[neighbor] = new_cost
+            parent[neighbor] = current
+            if neighbor not in open_list:
+                open_list.append(neighbor)
+if goal not in parent:
+    print("No path exists.")
+else:
+    path = []
+    cell = goal
+    while cell is not None:
+        path.append(cell)
+        cell = parent[cell]
+    path.reverse()
+    print("A* path:", path)
+    print("Number of moves:", len(path) - 1)

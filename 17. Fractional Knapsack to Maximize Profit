@@ -1,0 +1,20 @@
+n = int(input("Number of parcels: "))
+parcels = []
+print("Enter weight and profit for each parcel:")
+for i in range(n):
+    weight, profit = map(float, input().split())
+    if weight > 0:
+        parcels.append((profit / weight, weight, profit))
+capacity = float(input("Truck capacity: "))
+parcels.sort(reverse=True)  # Highest profit per unit weight first
+total_profit = 0.0
+for ratio, weight, profit in parcels:
+    if capacity <= 0:
+        break
+    if weight <= capacity:
+        total_profit += profit
+        capacity -= weight
+    else:
+        total_profit += ratio * capacity
+        capacity = 0
+print("Maximum profit:", round(total_profit, 2))
